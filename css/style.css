@@ -1,0 +1,1071 @@
+/*
+Custom Styles for AI Resume Builder Landing Page
+Author: Jules (AI Assistant)
+Version: 1.0
+Description: A modern, responsive landing page featuring Glassmorphism 2.0,
+             animated gradients, interactive elements, and dynamic typography.
+*/
+
+/* Table of Contents
+--------------------------------------------------
+1. Global Styles & Variables
+   - CSS Custom Properties (Variables)
+   - Basic Body & Container Styling
+   - Section Styling
+   - Utility Classes (if any added later)
+2. Header & Navigation
+3. Hero Section
+4. Features Section
+   - Resume Preview
+   - Skill Graphs
+5. Testimonials Section (Bento Grid)
+6. Footer
+7. Glassmorphism Styles
+8. Animations & Micro-interactions
+9. Button Styles
+10. Typography
+11. Responsive Design (Media Queries)
+*/
+
+/* 1. Global Styles & Variables
+-------------------------------------------------- */
+/* :root defines CSS custom properties (variables) for consistent theming across the site. */
+:root {
+    /* Color Palette */
+    --primary-color: #6d47d9;       /* Vibrant purple - Main brand color */
+    --secondary-color: #44c2fd;     /* Bright blue - Accent and secondary actions */
+    --accent-color: #f8c02c;        /* Warm yellow/gold - Highlights, special CTAs (not used extensively yet) */
+
+    --text-color: #e0e0e0;          /* Light gray - Primary text color on dark backgrounds */
+    --text-dark: #333333;           /* Dark gray - Primary text color on light backgrounds (if any) */
+
+    --background-dark: #1a1a2e;     /* Deep dark blue/purple - Main page background */
+    --background-light: #ffffff;    /* White - For light themed sections or elements (if any) */
+
+    /* Glassmorphism Variables - Luminous Frosted Glass 2.0 */
+    --glass-bg: rgba(255, 255, 255, 0.08);           /* Base background color for glass panels, slightly transparent */
+    --glass-blur: 12px;                              /* Intensity of the backdrop blur effect */
+    --glass-border-color: rgba(255, 255, 255, 0.18); /* Border color for the glass panels, subtle but visible */
+    --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.25); /* Soft shadow to lift the panel (can be adjusted or removed) */
+
+    /* Layout & Sizing */
+    --border-radius: 12px;          /* Standard border radius for cards, buttons, etc. */
+    --transition-speed: 0.3s;       /* Default duration for CSS transitions for smooth interactions */
+    --container-max-width: 1200px;  /* Maximum width for the main content container */
+    --section-padding-y: 80px;      /* Standard vertical padding for sections */
+
+    /* Typography */
+    --font-primary: 'Manrope', sans-serif;    /* Main body font - chosen for its modern look and readability */
+    --font-secondary: 'Poppins', sans-serif;  /* Headings font - chosen for its geometric and clean appearance */
+}
+
+/* Basic body styling */
+body {
+    font-family: var(--font-primary);         /* Sets the default font for the page */
+    background-color: var(--background-dark); /* Applies the dark background theme */
+    color: var(--text-color);                 /* Sets the default text color */
+    line-height: 1.7;                         /* Improves text readability with adequate spacing */
+    overflow-x: hidden;                       /* Prevents horizontal scrollbars from appearing unexpectedly */
+    margin: 0;                                /* Removes default browser margins for consistent layout */
+}
+
+/* Centered container for content sections, using Bootstrap's .container concept but customized */
+.container {
+    width: 90%;                               /* Responsive width, uses 90% of parent's width */
+    max-width: var(--container-max-width);    /* Limits the container's width on larger screens */
+    margin-left: auto;                        /* Centers the container horizontally */
+    margin-right: auto;
+    padding-left: 15px;                       /* Provides consistent gutter space on the sides */
+    padding-right: 15px;
+}
+
+/* Common styling for page sections (e.g., Hero, Features, Testimonials, Footer) */
+.section {
+    padding: var(--section-padding-y) 0;     /* Applies vertical padding defined in variables */
+    position: relative;                       /* Establishes a positioning context for child elements (e.g., for parallax, absolute positioning) */
+    overflow: hidden;                         /* Crucial for preventing content overflow from breaking layout, especially with animations */
+}
+
+/* Styling for main section titles (e.g., "Powerful Features", "Trusted by Top Recruiters") */
+.section-title {
+    font-family: var(--font-secondary);       /* Uses the designated heading font */
+    font-size: 2.5rem;                        /* Approx 40px; responsive adjustments are handled in media queries */
+    font-weight: 700;                         /* Bold for emphasis and visual hierarchy */
+    text-align: center;                       /* Centers the title within its container */
+    margin-bottom: 60px;                      /* Provides space below the title before the section content begins */
+    color: var(--text-color);                 /* Ensures visibility on the dark background */
+    position: relative;                       /* Required for positioning the decorative underline pseudo-element */
+}
+
+/* Decorative underline for section titles, adding a visual accent */
+.section-title::after {
+    content: '';                              /* Required for pseudo-elements to be generated */
+    display: block;                           /* Makes the pseudo-element a block-level element */
+    width: 70px;                              /* Defines the width of the underline */
+    height: 4px;                              /* Defines the thickness of the underline */
+    background: linear-gradient(90deg, var(--primary-color), var(--secondary-color)); /* Creates a gradient color for the underline */
+    margin: 15px auto 0;                      /* Centers the underline horizontally below the text */
+    border-radius: 2px;                       /* Adds slightly rounded edges to the underline */
+}
+
+/* Accessibility Consideration:
+   Removing default browser outlines (`*:focus { outline: none; }`) can hinder keyboard navigation visibility.
+   It's crucial to provide clear custom focus styles for all interactive elements (buttons, links, form inputs)
+   to ensure accessibility standards are met. These are handled in specific element styles (e.g. .btn:focus). */
+*:focus {
+    outline: none;
+    /* Example custom focus: box-shadow: 0 0 0 3px var(--secondary-color-transparent); */
+}
+
+
+/* 2. Header & Navigation
+-------------------------------------------------- */
+/* Styles for the main header, which is designed to be sticky (fixed position at the top) */
+#main-header {
+    position: fixed; /* Makes the header stick to the top of the viewport during scroll */
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000; /* Ensure it's above other content */
+    padding: 15px 0;
+    transition: background-color var(--transition-speed) ease, box-shadow var(--transition-speed) ease, padding var(--transition-speed) ease;
+    background: transparent; /* Header is transparent when at the top of the page */
+    transition: background-color var(--transition-speed) ease,
+                box-shadow var(--transition-speed) ease,
+                padding var(--transition-speed) ease; /* Smooth transitions for scroll effects */
+}
+
+/* Styles for the header when the page is scrolled (class added via JavaScript) */
+#main-header.scrolled {
+    background: rgba(26, 26, 46, 0.85); /* Darker, semi-transparent background for glass effect */
+    backdrop-filter: blur(var(--glass-blur)); /* Applies the blur for Glassmorphism */
+    -webkit-backdrop-filter: blur(var(--glass-blur)); /* Safari browser compatibility */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2); /* Subtle shadow for depth */
+    padding: 10px 0; /* Reduces padding slightly on scroll */
+}
+
+/* Navigation bar within the header */
+#main-header nav {
+    display: flex; /* Uses flexbox for layout */
+    justify-content: space-between; /* Distributes space between logo, links, and CTAs */
+    align-items: center; /* Vertically aligns items in the nav bar */
+}
+
+/* Logo styling */
+.logo a {
+    font-family: var(--font-secondary); /* Uses heading font for the logo */
+    font-size: 1.8rem;                  /* Approx 28.8px */
+    font-weight: 700;                   /* Bold for prominence */
+    color: var(--text-color);
+    text-decoration: none;              /* Removes default underline from link */
+    transition: color var(--transition-speed) ease; /* Smooth color transition on hover */
+}
+
+.logo a:hover {
+    color: var(--secondary-color); /* Changes color on hover to accent color */
+}
+
+/* Main navigation links list */
+.nav-links {
+    list-style: none; /* Removes default list bullet points */
+    display: flex;    /* Aligns links horizontally */
+    margin: 0;        /* Removes default margin */
+    padding: 0;       /* Removes default padding */
+}
+
+.nav-links li {
+    position: relative; /* Establishes positioning context for submenus */
+    margin-left: 25px;  /* Space between navigation items */
+}
+
+/* Individual navigation links */
+.nav-links a {
+    font-family: var(--font-primary); /* Uses primary font for nav links */
+    font-weight: 500;                 /* Medium weight for clarity */
+    font-size: 1rem;                  /* Approx 16px */
+    color: var(--text-color);
+    text-decoration: none;
+    padding: 10px 15px;               /* Padding for clickable area and visual spacing */
+    border-radius: var(--border-radius); /* Rounded corners, subtle effect */
+    transition: color var(--transition-speed) ease, background-color var(--transition-speed) ease;
+    position: relative; /* For the animated underline pseudo-element */
+}
+
+/* Animated underline for navigation links */
+.nav-links a::after {
+    content: '';
+    position: absolute;
+    width: 0; /* Starts with no width, animates on hover */
+    height: 2px; /* Thickness of the underline */
+    bottom: 5px; /* Position from the bottom of the link */
+    left: 50%;   /* Starts from the center for symmetrical animation */
+    transform: translateX(-50%);
+    background: linear-gradient(90deg, var(--primary-color), var(--secondary-color)); /* Gradient underline */
+    transition: width var(--transition-speed) ease;
+}
+
+/* Underline animation on hover and for active links */
+.nav-links a:hover::after,
+.nav-links li.active a::after { /* '.active' class would need to be added via JS for current page */
+    width: calc(100% - 30px); /* Makes underline match the padded content width */
+}
+
+.nav-links a:hover,
+.nav-links li.active a {
+    color: var(--secondary-color); /* Changes text color on hover/active */
+}
+
+/* Dropdown Submenu Styles */
+.submenu {
+    list-style: none;
+    position: absolute; /* Positions submenu relative to its parent 'li' */
+    top: 100%;          /* Positions it directly below the parent link */
+    left: 0;
+    background: rgba(30, 30, 50, 0.95); /* Darker, slightly more opaque glass for submenus */
+    backdrop-filter: blur(8px);       /* Slightly less blur than main header for differentiation */
+    -webkit-backdrop-filter: blur(8px);
+    border-radius: 0 0 var(--border-radius) var(--border-radius); /* Rounded bottom corners */
+    padding: 10px 0;    /* Vertical padding for submenu items */
+    min-width: 200px;   /* Minimum width of the submenu */
+    opacity: 0;         /* Hidden by default */
+    visibility: hidden; /* Hidden by default, also for accessibility */
+    transform: translateY(10px); /* Slight downward offset for entry animation */
+    transition: opacity var(--transition-speed) ease,
+                visibility var(--transition-speed) ease,
+                transform var(--transition-speed) ease; /* Smooth transitions for appearance */
+    box-shadow: 0 8px 16px rgba(0,0,0,0.25); /* Shadow for depth */
+    z-index: 1100; /* Ensure submenu is above other nav items but below potential modals */
+}
+
+/* Show submenu on parent link hover */
+.nav-links li:hover > .submenu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0); /* Animates into position */
+}
+
+.submenu li {
+    margin: 0; /* Resets margin for submenu list items */
+}
+
+.submenu a {
+    display: block;     /* Makes entire item clickable */
+    padding: 10px 20px; /* Padding for submenu links */
+    font-size: 0.9rem;  /* Slightly smaller font size for submenu items */
+    color: var(--text-color);
+    white-space: nowrap; /* Prevents text wrapping in submenu items */
+}
+
+.submenu a:hover {
+    background-color: var(--primary-color); /* Highlight background on hover */
+    color: #fff;                            /* Text color changes to white on hover */
+}
+
+.submenu a::after { /* Removes the animated underline from submenu items */
+    display: none;
+}
+
+/* Call-to-Action (CTA) Buttons in Navigation Bar */
+.cta-buttons .btn {
+    margin-left: 15px;  /* Spacing from the nav links or previous button */
+    padding: 8px 20px;  /* Custom padding for nav CTA buttons */
+    font-size: 0.9rem;  /* Slightly smaller font for nav CTAs */
+}
+
+/* Mobile Menu Icon (Hamburger Icon) */
+/* Initially hidden on desktop, displayed via media queries for mobile */
+.mobile-menu-icon {
+    display: none;
+    /* Further styling (size, color, animation of bars) is in the Responsive Design section */
+    font-size: 1.8rem; /* Fallback if using a font icon, but spans are used here */
+    color: var(--text-color);
+    cursor: pointer;
+    z-index: 1005; /* Ensure it's above other header content but below an open mobile menu */
+}
+
+
+/* 3. Hero Section
+-------------------------------------------------- */
+/* Styles for the main hero section, typically the first thing a user sees */
+.hero-section {
+    min-height: 100vh; /* Ensures hero section takes at least the full viewport height */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    position: relative; /* For pseudo-elements and Three.js container */
+    padding-top: 100px; /* Account for sticky header height */
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 25%, #0f3460 50%, #533483 75%, #2c003e 100%);
+    background-size: 400% 400%; /* For gradient animation - allows smooth transition between gradient stops */
+    animation: animatedGradient 20s ease infinite; /* Applies the gradient animation */
+    overflow: hidden; /* Ensures no scrollbars appear due to pseudo-elements or off-screen content */
+}
+
+/* Keyframes for the animated gradient background */
+@keyframes animatedGradient {
+    0% { background-position: 0% 50%; }    /* Start position */
+    50% { background-position: 100% 50%; } /* Mid-point position */
+    100% { background-position: 0% 50%; }  /* End position (loops back to start) */
+}
+
+/* Optional: A subtle overlay pattern or noise texture for added depth */
+.hero-section::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    /* Example: background-image: url('assets/images/noise-texture.png'); */
+    /* opacity: 0.05; */ /* Keep opacity very low if used */
+    z-index: 0; /* Positioned behind the main content */
+}
+
+/* Container within the hero section to manage content layout */
+.hero-section .container {
+    position: relative; /* Ensures content is stacked above the ::before pseudo-element */
+    z-index: 1;
+}
+
+/* Kinetic Headline: Animated using GSAP */
+#kinetic-headline {
+    font-family: var(--font-secondary); /* Uses heading font */
+    font-size: 3.5rem;                  /* Large font size for impact (approx 56px) */
+    font-weight: 800;                   /* Extra bold for emphasis */
+    color: #fff;                        /* White text color for contrast against dark background */
+    line-height: 1.2;                   /* Spacing between lines of text */
+    margin-bottom: 20px;                /* Space below the headline */
+    letter-spacing: -1px;               /* Slightly tighter letter spacing for a modern look */
+    /* Individual words/letters are wrapped in <span> tags by GSAP for fine-grained animation control */
+}
+
+/* Sub-headline below the main kinetic headline */
+.hero-subheadline {
+    font-family: var(--font-primary);   /* Uses primary body font */
+    font-size: 1.25rem;                 /* Approx 20px */
+    color: rgba(255, 255, 255, 0.85);   /* Slightly transparent white for softer appearance */
+    margin-bottom: 40px;                /* Space below the sub-headline */
+    max-width: 600px;                   /* Limits width for better readability */
+    margin-left: auto;                  /* Centers the sub-headline */
+    margin-right: auto;
+}
+
+/* Call-to-Action buttons within the hero section */
+.hero-cta .btn {
+    margin: 10px; /* Spacing around buttons */
+}
+
+/* Container for the Three.js 3D element */
+#threejs-container {
+    position: absolute; /* Positions the 3D element within the hero section */
+    bottom: 5%;         /* Distance from the bottom */
+    right: 5%;          /* Distance from the right */
+    width: 150px;       /* Defines the width of the 3D canvas */
+    height: 150px;      /* Defines the height of the 3D canvas */
+    /* background-color: rgba(255,255,255,0.05); /* Optional: for visibility during development */
+    /* border-radius: 50%; */ /* Optional: if a circular container is desired */
+    z-index: 2; /* Ensures it's above other hero content if overlapping */
+}
+
+
+/* 4. Features Section
+-------------------------------------------------- */
+/* Styling for the features section, showcasing product capabilities */
+.features-section {
+    background-color: var(--background-dark); /* Consistent dark background */
+    /* Consider a subtle pattern or secondary animated gradient here if more visual separation is needed */
+}
+
+/* Styling for individual feature subsections (e.g., Resume Preview, Skill Graphs) */
+.feature-subsection {
+    margin-bottom: 60px; /* Space between feature subsections */
+    padding: 40px;       /* Generous padding inside glass panels for content */
+    text-align: center;  /* Centers text content within the subsection */
+    /* Glass panel styling is applied via the .glass-panel class in HTML */
+}
+
+/* Headings within feature subsections */
+.feature-subsection h3 {
+    font-size: 1.8rem;          /* Approx 28.8px */
+    color: var(--secondary-color); /* Uses accent color for feature titles */
+    margin-bottom: 15px;        /* Space below the feature title */
+}
+
+/* Paragraph text within feature subsections */
+.feature-subsection p {
+    font-size: 1rem;                    /* Approx 16px */
+    color: rgba(224, 224, 224, 0.85);   /* Slightly transparent light text */
+    max-width: 700px;                   /* Limits width for readability */
+    margin: 0 auto 30px auto;           /* Centers paragraph and adds bottom margin */
+}
+
+/* --- Resume Preview Specific Styles --- */
+#resume-preview {
+    /* Specific Glassmorphism adjustments for this panel, if needed, can go here */
+}
+
+/* Container for the resume preview image/content */
+.resume-preview-content {
+    width: 100%;
+    max-width: 500px; /* Controls the maximum size of the preview image container */
+    margin: 0 auto;   /* Centers the preview content */
+    border-radius: var(--border-radius); /* Consistent rounded corners */
+    overflow: hidden; /* Ensures the image respects the border radius of the container */
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2); /* Inner shadow for a sense of depth */
+    transition: transform var(--transition-speed) ease,
+                box-shadow var(--transition-speed) ease; /* Smooth transition for hover effects */
+}
+
+.resume-preview-content img {
+    display: block; /* Removes extra space below the image */
+    width: 100%;    /* Makes the image responsive within its container */
+    height: auto;   /* Maintains aspect ratio */
+    /* border-radius: var(--border-radius); /* Optional: if image itself needs rounding, though parent overflow:hidden is often better */
+}
+
+/* Hover effect for the resume preview */
+.resume-preview-content:hover {
+    transform: scale(1.03); /* Slight zoom effect on hover */
+    box-shadow: 0 15px 40px rgba(0,0,0,0.3); /* Enhances shadow on hover for more depth */
+}
+
+/* --- Animated Skill Graphs Specific Styles --- */
+#skill-graphs {
+    /* Specific Glassmorphism adjustments for this panel, if needed */
+}
+
+/* Container for all skill graph items */
+.skill-graphs-content {
+    display: flex;
+    flex-direction: column; /* Stacks skill items vertically */
+    gap: 25px;              /* Space between individual skill graph items */
+    max-width: 600px;       /* Controls the maximum width of the skills area */
+    margin: 30px auto 0 auto; /* Centers the content and adds top margin */
+}
+
+/* Individual skill graph item (label + bar) */
+.skill-graph-item {
+    display: flex;
+    align-items: center; /* Aligns skill label and bar container vertically */
+    gap: 15px;           /* Space between the skill label and the graph bar container */
+}
+
+/* Skill label (e.g., "JavaScript", "Python") */
+.skill-graph-item span {
+    font-family: var(--font-primary);
+    font-weight: 500;
+    color: var(--text-color);
+    width: 120px;       /* Fixed width for labels to ensure alignment of bars */
+    text-align: left;   /* Aligns skill label text to the left */
+    font-size: 0.95rem; /* Slightly smaller font for skill labels */
+    flex-shrink: 0;     /* Prevents label from shrinking if space is tight */
+}
+
+/* Container for the skill bar track and the animated bar itself */
+.graph-bar-container {
+    flex-grow: 1; /* Allows the bar container to take up remaining horizontal space */
+    background-color: rgba(0, 0, 0, 0.25); /* Dark, semi-transparent track for the bar */
+    border-radius: var(--border-radius);
+    height: 20px;        /* Height of the skill bar track */
+    overflow: hidden;    /* Ensures the animated bar respects the container's border radius */
+    position: relative;  /* Positioning context for the bar */
+}
+
+/* The animated skill bar itself */
+.graph-bar {
+    height: 100%;
+    background: linear-gradient(90deg, var(--primary-color), var(--secondary-color)); /* Gradient fill for the bar */
+    border-radius: var(--border-radius);
+    width: 0%; /* Initial width is 0%, animated to target percentage by GSAP */
+    transform-origin: left; /* Ensures animation grows from the left side */
+    /* Fallback CSS transition if JS/GSAP is disabled, though GSAP will override this */
+    transition: width 1s ease-out;
+}
+
+/* Comment explaining how GSAP uses inline styles for target widths (already in HTML) */
+/* e.g., <div class="graph-bar" style="width: 80%;"></div> */
+
+
+/* 5. Testimonials Section (Bento Grid)
+-------------------------------------------------- */
+/* Styling for the testimonials section, showcasing social proof */
+.testimonials-section {
+    background-color: var(--background-dark); /* Consistent dark background */
+}
+
+/* Bento Grid layout for testimonials */
+.bento-grid {
+    display: grid;
+    /* Creates responsive columns: each column is at least 300px wide,
+       and they will fit as many as possible per row, distributing extra space. */
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 25px; /* Space between testimonial items */
+    margin-top: 40px; /* Space above the grid */
+}
+
+/* Individual testimonial item in the bento grid */
+.bento-item {
+    /* General glass panel styling is applied via the .glass-panel class in HTML */
+    padding: 30px; /* Padding inside the testimonial card */
+    display: flex;
+    flex-direction: column; /* Stacks content (image, text, name) vertically */
+    align-items: center;    /* Centers content for standard-sized items */
+    text-align: center;     /* Centers text for standard-sized items */
+}
+
+/* Styling for a larger, featured testimonial item in the bento grid */
+.bento-item.bento-item-large {
+    /* This class can be used with grid-column/grid-row to make an item span multiple cells.
+       For the current auto-fit setup, it primarily modifies content alignment. */
+    /* Example: grid-column: span 2; */ /* Uncomment to make it span two columns if grid structure allows */
+    align-items: flex-start; /* Aligns content to the start (left) for larger items */
+    text-align: left;        /* Aligns text to the left for larger items */
+}
+
+/* Recruiter/Testimonial giver's image */
+.testimonial-img {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%; /* Makes the image circular */
+    object-fit: cover;  /* Ensures the image covers the area without distortion */
+    margin-bottom: 20px; /* Space below the image */
+    border: 3px solid var(--secondary-color); /* Decorative border using accent color */
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);  /* Subtle shadow for the image */
+}
+
+/* Testimonial quote text */
+.bento-item p {
+    font-family: var(--font-primary);
+    font-style: italic;                 /* Italicizes the quote for emphasis */
+    color: rgba(224, 224, 224, 0.9);    /* Slightly transparent light text */
+    margin-bottom: 15px;                /* Space below the quote */
+    font-size: 0.95rem;                 /* Font size for testimonial text */
+    line-height: 1.6;                   /* Line spacing for readability */
+}
+
+/* Name of the testimonial giver */
+.bento-item h4 {
+    font-family: var(--font-secondary);
+    font-size: 1.1rem;
+    color: var(--text-color);
+    font-weight: 600;                   /* Medium-bold weight for the name */
+    margin-bottom: 5px;                 /* Space below the name */
+}
+
+/* Title/Company of the testimonial giver */
+.bento-item span {
+    font-family: var(--font-primary);
+    font-size: 0.85rem;                 /* Smaller font size for the title/company */
+    color: var(--secondary-color);      /* Uses accent color for this detail */
+    font-weight: 500;
+}
+
+/* Adjustments for content within a large bento item */
+.bento-item-large .testimonial-img {
+    /* Specific styles for image in large item, if needed (e.g., larger size) */
+}
+.bento-item-large p {
+    font-size: 1.05rem; /* Slightly larger text for a featured testimonial quote */
+}
+
+
+/* 6. Footer
+-------------------------------------------------- */
+/* Styling for the main footer section of the page */
+.footer-section {
+    background-color: #121222; /* Even darker shade for the footer, distinct from main content */
+    color: rgba(224, 224, 224, 0.7); /* Slightly dimmer text for footer */
+    padding: 60px 0 30px 0; /* More padding top, less bottom */
+}
+
+.footer-content {
+    display: flex;
+    flex-wrap: wrap; /* Allow columns to wrap on smaller screens */
+    justify-content: space-between;
+    gap: 30px; /* Gap between columns */
+    margin-bottom: 40px;
+}
+
+.footer-column {
+    flex: 1; /* Distribute space among columns */
+    min-width: 250px; /* Minimum width before wrapping */
+}
+
+.footer-column h4 {
+    font-family: var(--font-secondary);
+    font-size: 1.2rem;
+    color: var(--text-color); /* Brighter color for headings in footer */
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.footer-column h4::after { /* Small accent under footer column titles */
+    content: '';
+    display: block;
+    width: 30px;
+    height: 2px;
+    background: var(--primary-color);
+    margin-top: 8px;
+}
+
+.footer-column p {
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+    line-height: 1.6;
+    color: rgba(224, 224, 224, 0.7);
+}
+
+.footer-column ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.footer-column ul li {
+    margin-bottom: 10px;
+}
+
+.footer-column ul li a {
+    color: rgba(224, 224, 224, 0.7);
+    text-decoration: none;
+    transition: color var(--transition-speed) ease, padding-left var(--transition-speed) ease;
+}
+
+.footer-column ul li a:hover {
+    color: var(--secondary-color);
+    padding-left: 5px; /* Slight indent on hover */
+}
+
+.footer-column .social-links a { /* If you add specific social links */
+    margin-right: 10px;
+    font-size: 1.2rem;
+}
+
+.footer-bottom {
+    text-align: center;
+    padding-top: 30px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1); /* Subtle separator line */
+    font-size: 0.85rem;
+    color: rgba(224, 224, 224, 0.6);
+}
+
+.footer-bottom p {
+    margin: 0;
+    color: rgba(224, 224, 224, 0.6);
+}
+
+
+/* 7. Glassmorphism Styles
+-------------------------------------------------- */
+.glass-panel {
+    background: var(--glass-bg);
+    backdrop-filter: blur(var(--glass-blur));
+    -webkit-backdrop-filter: blur(var(--glass-blur)); /* Safari */
+    border: 1px solid var(--glass-border-color);
+    border-radius: var(--border-radius);
+    padding: 30px;
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37); /* Softer shadow for glass */
+    position: relative; /* For potential pseudo-elements or layered effects */
+    background: var(--glass-bg);                        /* Uses the defined glass background color */
+    backdrop-filter: blur(var(--glass-blur));           /* Applies the blur effect to content behind the panel */
+    -webkit-backdrop-filter: blur(var(--glass-blur));   /* Safari browser compatibility for backdrop-filter */
+    border: 1px solid var(--glass-border-color);        /* Subtle border to define the panel edges */
+    border-radius: var(--border-radius);                /* Consistent rounded corners */
+    padding: 30px;                                      /* Inner padding for content within the panel */
+    box-shadow: var(--glass-shadow);                    /* Soft shadow to give a sense of depth and lift */
+    position: relative;                                 /* Establishes positioning context for child elements */
+    z-index: 1;                                         /* Ensures panels are above non-interactive background elements */
+}
+
+
+/* 8. Animations & Micro-interactions
+-------------------------------------------------- */
+/* This section is primarily for CSS-driven animations or micro-interaction setup.
+   Most complex animations (GSAP based) are handled in js/main.js.
+   CSS transitions for hover effects on buttons, links, etc., are defined within their respective sections.
+   The animated gradient in the Hero section has its @keyframes defined in Section 3.
+   The shine effect on primary buttons is defined in Section 9.
+*/
+
+
+/* 9. Button Styles
+-------------------------------------------------- */
+/* General button styling for all .btn elements */
+.btn {
+    font-family: var(--font-secondary); /* Uses heading font for a distinct button appearance */
+    font-weight: 600;                   /* Medium-bold for button text */
+    padding: 12px 30px;                 /* Default padding for buttons */
+    border-radius: var(--border-radius);/* Consistent rounded corners */
+    text-decoration: none;              /* Removes default underline from button links */
+    transition: all var(--transition-speed) ease; /* Smooth transition for all animatable properties */
+    cursor: pointer;                    /* Changes cursor to indicate interactivity */
+    border: none;                       /* Removes default browser border */
+    display: inline-block;              /* Allows setting padding and margin */
+    text-align: center;                 /* Centers text within the button */
+    position: relative;                 /* For positioning pseudo-elements like the shine effect */
+    overflow: hidden;                   /* Clips pseudo-elements like the shine effect to button bounds */
+    -webkit-tap-highlight-color: transparent; /* Removes tap highlight on mobile for a cleaner feel */
+}
+
+/* Primary button style (e.g., main CTAs) */
+.btn-primary {
+    background: linear-gradient(90deg, var(--primary-color), var(--secondary-color)); /* Gradient background */
+    color: #fff;                        /* White text for contrast */
+    box-shadow: 0 4px 15px rgba(109, 71, 217, 0.3); /* Subtle shadow related to primary color, adjust alpha for intensity */
+}
+
+.btn-primary:hover, .btn-primary:focus {
+    transform: translateY(-3px);        /* Slight upward lift on hover/focus */
+    box-shadow: 0 6px 20px rgba(109, 71, 217, 0.5); /* Enhanced shadow on hover/focus */
+    color: #fff;                        /* Ensures text color remains white */
+}
+
+/* Secondary / Ghost button style (e.g., secondary CTAs, "Learn More") */
+.btn-secondary-ghost {
+    background-color: transparent;      /* Transparent background */
+    color: var(--text-color);           /* Uses default light text color */
+    border: 2px solid var(--secondary-color); /* Border using secondary accent color */
+}
+
+.btn-secondary-ghost:hover, .btn-secondary-ghost:focus {
+    background-color: var(--secondary-color); /* Fills with secondary color on hover/focus */
+    color: var(--background-dark);                 /* Text color changes for contrast (e.g. dark text on light blue bg) */
+    transform: translateY(-2px);        /* Slight upward lift */
+    box-shadow: 0 4px 10px rgba(68, 194, 253, 0.25); /* Subtle shadow related to secondary color */
+}
+
+/* Larger button variant */
+.btn-large {
+    padding: 15px 40px; /* Increased padding for larger buttons */
+    font-size: 1.1rem;  /* Slightly larger font size */
+}
+
+/* Micro-interaction: Shine effect on hover for primary buttons */
+.btn-primary::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%; /* Starts off-screen to the left */
+    width: 100%;
+    height: 100%;
+    background: linear-gradient( /* Diagonal shine effect */
+        120deg,
+        transparent,
+        rgba(255, 255, 255, 0.35), /* Increased shine opacity */
+        transparent
+    );
+    transition: left 0.4s ease-in-out; /* Slightly adjusted speed for shine effect */
+}
+
+.btn-primary:hover::before {
+    left: 100%; /* Moves shine across the button to off-screen right */
+}
+
+
+/* 10. Typography
+-------------------------------------------------- */
+/* General styling for heading elements (h1-h6) */
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-secondary); /* Uses designated heading font */
+    font-weight: 700;                   /* Bold weight for headings */
+    color: var(--text-color);           /* Default heading color (light for dark background) */
+    line-height: 1.3;                   /* Consistent line height for headings */
+}
+/* Specific heading sizes are often set per section (e.g., #kinetic-headline, .section-title) */
+
+/* General styling for paragraph text */
+p {
+    font-family: var(--font-primary); /* Uses designated body font */
+    color: var(--text-color);         /* Default paragraph text color */
+    margin-bottom: 1rem;              /* Standard bottom margin for paragraphs (approx 16px) */
+}
+
+/* General styling for anchor (<a>) links */
+a {
+    color: var(--secondary-color);      /* Default link color using secondary accent */
+    text-decoration: none;              /* Removes default underline from links */
+    transition: color var(--transition-speed) ease; /* Smooth color transition on hover */
+}
+
+a:hover, a:focus {
+    color: var(--primary-color);        /* Link color changes to primary brand color on hover/focus */
+    text-decoration: none;              /* Ensures no underline appears on hover unless specified */
+    /* Consider adding a subtle underline on hover for non-button links for better affordance:
+       text-decoration: underline;
+       text-decoration-thickness: 1px;
+       text-underline-offset: 3px; */
+}
+
+
+/* 11. Responsive Design (Media Queries)
+-------------------------------------------------- */
+/* This section contains CSS rules that apply based on screen size,
+   following a mobile-first approach (larger screen styles override smaller ones if needed,
+   but here we define max-width breakpoints for adjustments on smaller screens). */
+
+/* Common breakpoints used:
+   - Small devices (landscape phones, 576px and up)
+   - Medium devices (tablets, 768px and up)
+   - Large devices (desktops, 992px and up)
+   - Extra large devices (large desktops, 1200px and up)
+*/
+
+/* Max-width: 991px (Tablets and below) */
+@media (max-width: 991.98px) {
+    .nav-links {
+        position: absolute;
+        top: 100%; /* Position below header */
+        left: 0;
+        width: 100%;
+        background: rgba(20, 20, 35, 0.98); /* Darker, less transparent for readability */
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        flex-direction: column;
+        align-items: center;
+        padding: 20px 0;
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.5s ease-out, padding 0.3s ease-out;
+        border-top: 1px solid var(--glass-border-color);
+    }
+
+    .nav-links.active {
+        max-height: 500px; /* Adjust as needed for number of links */
+        padding: 20px 0;
+    }
+
+    .nav-links li {
+        margin: 15px 0;
+        width: 100%;
+        text-align: center;
+    }
+
+    .nav-links a {
+        display: block; /* Make links take full width for easier tapping */
+        padding: 15px;
+        font-size: 1.1rem;
+    }
+     .nav-links a:hover::after,
+     .nav-links li.active a::after {
+        width: 50%; /* Adjust underline for centered text */
+    }
+
+
+    .cta-buttons {
+        /* By default, hide them from the main bar, show them in the expanded menu or handle differently */
+        display: none;
+    }
+    /* If you want CTA buttons inside the mobile menu */
+    .cta-buttons.active {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        padding: 10px 0;
+    }
+    .cta-buttons.active .btn {
+        margin: 10px 0;
+        width: 80%;
+        max-width: 250px;
+    }
+
+
+    .mobile-menu-icon {
+        display: flex; /* Show hamburger icon */
+        flex-direction: column;
+        justify-content: space-around;
+        width: 30px;
+        height: 25px;
+        cursor: pointer;
+        z-index: 1001; /* Above nav links */
+    }
+
+    .mobile-menu-icon span {
+        display: block;
+        width: 100%;
+        height: 3px;
+        background-color: var(--text-color);
+        border-radius: 3px;
+        transition: all 0.3s ease-in-out;
+    }
+
+    .mobile-menu-icon.active span:nth-child(1) {
+        transform: translateY(11px) rotate(45deg);
+    }
+    .mobile-menu-icon.active span:nth-child(2) {
+        opacity: 0;
+    }
+    .mobile-menu-icon.active span:nth-child(3) {
+        transform: translateY(-11px) rotate(-45deg);
+    }
+
+    /* Submenu in mobile */
+    .submenu {
+        position: static; /* No longer absolute */
+        background: rgba(30, 30, 50, 0.7); /* Slightly more transparent */
+        backdrop-filter: none;
+        border-radius: 0;
+        padding: 10px 0 10px 30px; /* Indent submenu items */
+        min-width: auto;
+        opacity: 1;
+        visibility: visible;
+        transform: none;
+        box-shadow: none;
+        margin-top: 10px;
+        display: none; /* Hidden by default, toggle with JS if needed or make always visible under parent */
+    }
+    .nav-links li:hover > .submenu { /* Simple hover still works if preferred, or JS toggle */
+         display: block;
+    }
+     .nav-links li.open > .submenu { /* Class to toggle with JS for tap */
+        display: block;
+    }
+    .submenu a {
+        padding: 10px 15px;
+        font-size: 1rem;
+    }
+
+
+    #kinetic-headline {
+        font-size: 2.8rem; /* Adjust hero headline size */
+    }
+    .hero-subheadline {
+        font-size: 1.1rem;
+    }
+
+    .section-title {
+        font-size: 2rem;
+    }
+
+    .bento-grid {
+        grid-template-columns: 1fr; /* Stack bento items */
+    }
+    .bento-item.bento-item-large {
+        grid-column: span 1; /* Reset span for single column */
+        text-align: center; /* Re-center text for stacked large item */
+        align-items: center;
+    }
+    .bento-item-large p {
+        font-size: 0.95rem; /* Match regular item text size */
+    }
+
+    #threejs-container {
+        width: 100px;
+        height: 100px;
+        bottom: 10px;
+        right: 10px;
+    }
+}
+
+
+/* Max-width: 767.98px (Phones and smaller tablets) */
+@media (max-width: 767.98px) {
+    .container {
+        width: 95%; /* More space on smaller screens */
+    }
+
+    #kinetic-headline {
+        font-size: 2.2rem; /* Further reduce headline size */
+        letter-spacing: -0.5px;
+    }
+    .hero-subheadline {
+        font-size: 1rem;
+        margin-bottom: 30px;
+    }
+    .hero-cta .btn {
+        padding: 12px 25px;
+        font-size: 0.9rem;
+        margin: 8px;
+    }
+     .hero-cta {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    .hero-cta .btn-large {
+        width: 80%;
+        max-width: 300px;
+    }
+
+
+    .section {
+        padding: 60px 0;
+    }
+    .section-title {
+        font-size: 1.8rem;
+        margin-bottom: 40px;
+    }
+     .section-title::after {
+        width: 50px;
+        height: 3px;
+        margin-top: 10px;
+    }
+
+    .feature-subsection {
+        padding: 30px 20px; /* Reduce padding on glass panels */
+    }
+    .feature-subsection h3 {
+        font-size: 1.5rem;
+    }
+    .resume-preview-content {
+        max-width: 90%;
+    }
+
+    .skill-graph-item {
+        flex-direction: column; /* Stack skill label and bar */
+        align-items: flex-start;
+        gap: 8px;
+    }
+    .skill-graph-item span {
+        width: auto; /* Allow label to take natural width */
+        margin-bottom: 5px;
+    }
+    .graph-bar-container {
+        height: 18px;
+    }
+
+    .footer-content {
+        flex-direction: column; /* Stack footer columns */
+        text-align: center;
+    }
+    .footer-column h4 {
+        margin-top: 20px; /* Add space between stacked columns */
+    }
+    .footer-column h4::after {
+        margin-left: auto;
+        margin-right: auto; /* Center accent */
+    }
+    .footer-column ul {
+        text-align: center;
+    }
+     .footer-column ul li a:hover {
+        padding-left: 0; /* Remove indent on hover for centered text */
+    }
+}
+
+
+/* Max-width: 575.98px (Small phones) */
+@media (max-width: 575.98px) {
+    #kinetic-headline {
+        font-size: 1.8rem;
+    }
+    .hero-subheadline {
+        font-size: 0.9rem;
+    }
+
+    .logo a {
+        font-size: 1.5rem;
+    }
+
+    .btn {
+        padding: 10px 20px;
+        font-size: 0.9rem;
+    }
+    .btn-large {
+        padding: 12px 25px;
+        font-size: 1rem;
+    }
+
+    #threejs-container { /* Hide on very small screens if it's too much */
+        /* display: none; */
+        width: 80px;
+        height: 80px;
+    }
+}
